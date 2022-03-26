@@ -22,7 +22,7 @@ const axesHelper = new THREE.AxesHelper( 2 );
 scene.add( axesHelper );
 
 //aqui el objeto-----
-const planeGeometry = new THREE.PlaneGeometry(1, 1, 1388, 1040)
+const planeGeometry = new THREE.PlaneGeometry(1, 0.75, 1388, 1040)
 const materialplan = new THREE.MeshPhongMaterial()
 //cargar mapa de desplazamiento
 const displacementMap = new THREE.TextureLoader().load('topografia2.jpg')
