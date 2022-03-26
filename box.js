@@ -110,7 +110,7 @@ function DashedHiddenEdgesBox(w, h, d, color) {
   g.translate(-0.5, -0.5, -0.5);
   g.scale(w, h, d);
   let m = new THREE.LineDashedMaterial({
-    color: 0x202020, 
+    color: '#CACACA', 
     dashSize: 0.3, 
     gapSize: 0.14,
     onBeforeCompile: shader => {
