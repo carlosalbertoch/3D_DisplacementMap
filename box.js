@@ -1,9 +1,10 @@
 import * as THREE from "https://cdn.skypack.dev/three@0.136.0";
 import { OrbitControls } from "https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/OrbitControls.js";
+import { GUI } from "https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/build/dat.gui.module.js";
 
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 100);
-camera.position.set(0, 0, 2);
+camera.position.set(0, -2.55, 2.55);
 let renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(innerWidth, innerHeight);
 renderer.setClearColor('#e5e5e5');
@@ -24,11 +25,12 @@ scene.add( axesHelper );
 const planeGeometry = new THREE.PlaneGeometry(3.6, 1.8, 360, 180)
 const materialplan = new THREE.MeshPhongMaterial()
 //cargar mapa de desplazamiento
-const displacementMap = new THREE.TextureLoader().load('earthbump.jpeg')
+const displacementMap = new THREE.TextureLoader().load('topografia2.jpg')
 materialplan.displacementMap = displacementMap
+materialplan.displacementScale=0.7;
 
 //cargar textura
-const texture = new THREE.TextureLoader().load('earthmap1k.jpeg')
+const texture = new THREE.TextureLoader().load('focalizada2.jpg')
 materialplan.map = texture;
 const plane = new THREE.Mesh(planeGeometry, materialplan);
 plane.roughnessMap=2;
@@ -40,14 +42,25 @@ scene.add(plane);
 let controls = new OrbitControls(camera, renderer.domElement);
 controls.minDistance=1.5;
 controls.maxDistance=6;
-//cargar caja
+//cargar grid
 let grid = new THREE.GridHelper(2, 20, 0x202020, 0x202020);
 grid.position.z = -0.01;
 grid.rotation.x=-Math.PI/2;
 scene.add(grid);
 
+//aqui el gui
+const gui = new GUI();
+let folderObj=gui.addFolder("Object")
+folderObj.add(plane.material,"displacementScale",0.2,1,0.05).name("Roughness: ");
+folderObj.add(plane.rotation,"z",0,Math.PI*2,Math.PI*2/8).name("Rotation Y: ");
+let folderBox=gui.addFolder("Container");
+folderBox.add(grid.position,"z",0,1,0.1).name("Position Grid Z");
+let folderAxes=gui.addFolder("Axes");
+folderAxes.add(axesHelper,"visible");
 
-let box = DashedHiddenEdgesBox(4, 2.2, 0.2, "aqua");
+//aqui la caja
+
+let box = DashedHiddenEdgesBox(4, 2.2, 0.2, "color");
 box.geometry.translate(0, 0, 0);
 scene.add(box);
 
@@ -148,3 +161,4 @@ function onWindowResize() {
 
   renderer.setSize(innerWidth, innerHeight);
 }
+folderBox.add(box,"visible");//colocar visible la caja
